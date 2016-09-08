@@ -1,14 +1,85 @@
 package mainTab;
 
+import java.awt.Component;
+import java.awt.Point;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.table.AbstractTableModel;
 
 public class Frame {
 	
-	public JPanel createContentPane() {
+	private int calendarWidth = 200;
+	private int calendarHeight = 450;
+	
+	private JPanel createContentPane() {
 		
 		JPanel contentPane = new JPanel();
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		
+		Component calendarComponent = createCalendarComponent();
+		contentPane.add(calendarComponent);
 		
 		return contentPane;
+		
+	}
+	
+	private Component createCalendarComponent() {
+		
+		JTable calendarComponent = new JTable(new CalendarTableModel());
+		
+		calendarComponent.setSize(calendarWidth, calendarHeight);
+		calendarComponent.setRowHeight(calendarHeight / calendarComponent.getRowCount());
+		
+		return calendarComponent;
+		
+	}
+	
+	private void createAndShowGUI() {
+		
+		JFrame frame = new JFrame("Appointment Book");
+		
+		frame.setContentPane(createContentPane());
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+				
+	}
+	
+	public static void main(String[] args) {
+		
+		Frame frame = new Frame();
+		frame.createAndShowGUI();
+		
+	}
+	
+	public class CalendarTableModel extends AbstractTableModel {
+
+		@Override
+		public int getRowCount() {
+			return 10;
+		}
+
+		@Override
+		public int getColumnCount() {
+			return 7;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return null;
+		}
+		
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+		
+		
 		
 	}
 	
