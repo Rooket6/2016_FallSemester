@@ -1,29 +1,55 @@
 package mainTab;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Point;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+
+import appointmentBookController.AppointmentBookController;
 
 public class Frame {
 	
 	private int calendarWidth = 200;
 	private int calendarHeight = 450;
 	
+	private AppointmentBookController controller;
+	
+	public Frame() {
+		controller = new AppointmentBookController();
+	}
+	
 	private JPanel createContentPane() {
 		
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		
+		Component headerComponent = createHeaderComponent();
+		contentPane.add(headerComponent);
+		
 		Component calendarComponent = createCalendarComponent();
 		contentPane.add(calendarComponent);
 		
 		return contentPane;
+		
+	}
+	
+	private Component createHeaderComponent() {
+		
+		JPanel headerComponent = new JPanel();
+		
+		headerComponent.setLayout(new BorderLayout());
+		
+		JButton LeftButton = new JButton(" < ");
+//		LeftButton.addActionListener(headerComponent);
+//		headerComponent.add
+		
+		
+		return headerComponent;
 		
 	}
 	
@@ -55,8 +81,10 @@ public class Frame {
 		Frame frame = new Frame();
 		frame.createAndShowGUI();
 		
+		
 	}
 	
+	@SuppressWarnings("serial")
 	public class CalendarTableModel extends AbstractTableModel {
 
 		@Override
