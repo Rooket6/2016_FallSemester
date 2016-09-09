@@ -8,24 +8,31 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import appointmentBookController.AppointmentBookController;
 
 public class AppointmentBookWindow implements ActionListener {
 	
+	// For the starting size of the calendar
 	private int calendarWidth = 200;
 	private int calendarHeight = 450;
 	
+	// The controller acts as a calendar and also handles appointments
 	private AppointmentBookController controller;
-	
-	JButton leftButton, rightButton, createAppointment;
-	CalendarComponent calendarComponent;
+
+	private CalendarComponent calendarComponent; // The visual component of the calendar
+	private JPanel headerComponent;
+	private JButton leftButton, rightButton, createAppointment;
+	private JLabel headerLabel;
 	
 	public AppointmentBookWindow() {
 		
@@ -39,34 +46,52 @@ public class AppointmentBookWindow implements ActionListener {
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		
-		Component headerComponent = createHeaderComponent();
-		headerComponent.setMaximumSize(new Dimension(Short.MAX_VALUE, 60));
+		createHeaderComponent();
+		headerComponent.setMaximumSize(new Dimension(Short.MAX_VALUE, 60)); // Infinitely wide, but confined to 60px high
 		contentPane.add(headerComponent);
 		
+		calendarComponent.setSize(300, 450);
 		contentPane.add(calendarComponent);
 		
 		return contentPane;
 		
 	}
 	
-	private Component createHeaderComponent() {
+	private void createHeaderComponent() {
 		
-		JPanel headerComponent = new JPanel();
+		headerComponent = new JPanel();
 		
 		headerComponent.setLayout(new BorderLayout());
 		
 		leftButton = new JButton(" < ");
 		leftButton.addActionListener(this);
-		headerComponent.add(leftButton);
+		headerComponent.add(leftButton, BorderLayout.WEST);
 		
+		// Shows the current month and year
+		headerLabel = new JLabel(controller.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + ", " + controller.get(Calendar.YEAR));
+		headerLabel.setHorizontalAlignment(JLabel.CENTER);
+		headerComponent.add(headerLabel);
 		
-		return headerComponent;
+		rightButton = new JButton(" > ");
+		rightButton.addActionListener(this);
+		headerComponent.add(rightButton, BorderLayout.EAST);
+		
+	}
+	
+	private void createFooterComponent() {
 		
 	}
 	
 	private void updateCalendarComponent() {
 		
 //		calendarComponent.cell
+		
+	}
+	
+	// Updates current month and year above calendar
+	private void updateHeaderLabel() {
+		
+		headerLabel.setText(controller.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + ", " + controller.get(Calendar.YEAR));
 		
 	}
 	
@@ -92,6 +117,7 @@ public class AppointmentBookWindow implements ActionListener {
 		frame.setContentPane(createContentPane());
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setMinimumSize(new Dimension(250, 550));
 		frame.pack();
 		frame.setVisible(true);
 				
@@ -101,7 +127,17 @@ public class AppointmentBookWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource() == leftButton) {
-			controller.set(Calendar.MONTH, controller.MONTH - 1);
+			
+			controller.add(Calendar.MONTH, -1);
+			updateHeaderLabel();
+			System.out.println("Left button fired");
+			
+		} else if (e.getSource() == rightButton) {
+			
+			controller.add(Calendar.MONTH, 1);
+			updateHeaderLabel();
+			System.out.println("Right button fired");
+			
 		}
 		
 	}
