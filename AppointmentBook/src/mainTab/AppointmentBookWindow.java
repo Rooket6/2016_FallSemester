@@ -145,12 +145,15 @@ public class AppointmentBookWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		// Handles header button presses
+		// Extra if statement or repeating 3 lines of code, which is better? Other option?
 		if (e.getSource() == leftButton || e.getSource() == rightButton) {
 			
 			if (e.getSource() == leftButton) {
 				
 				controller.add(Calendar.MONTH, -1);
 				
+			// I could have just used else instead of else if, but I wanted to be specific to make it more readable
+				// Is this a good idea?
 			} else if (e.getSource() == rightButton) {
 				
 				controller.add(Calendar.MONTH, 1);
