@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -143,16 +144,19 @@ public class AppointmentBookWindow implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource() == leftButton) {
+		// Handles header button presses
+		if (e.getSource() == leftButton || e.getSource() == rightButton) {
 			
-			controller.add(Calendar.MONTH, -1);
-			updateHeaderLabel();
-			calendarComponent.updateCalendarDays();
-			calendarComponent.repaint();
+			if (e.getSource() == leftButton) {
+				
+				controller.add(Calendar.MONTH, -1);
+				
+			} else if (e.getSource() == rightButton) {
+				
+				controller.add(Calendar.MONTH, 1);
+				
+			}
 			
-		} else if (e.getSource() == rightButton) {
-			
-			controller.add(Calendar.MONTH, 1);
 			updateHeaderLabel();
 			calendarComponent.updateCalendarDays();
 			calendarComponent.repaint();
@@ -164,7 +168,7 @@ public class AppointmentBookWindow implements ActionListener {
 	@SuppressWarnings("serial")
 	private class CalendarComponent extends JPanel {
 		
-		String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+		private final String[] DAYS_OF_WEEK = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 		
 		private JLabel[] daysOfWeekLabels;
 		private JLabel[][] daysOfMonthLabels;
@@ -177,22 +181,24 @@ public class AppointmentBookWindow implements ActionListener {
 			daysOfWeekLabels = new JLabel[7];
 			daysOfMonthLabels = new JLabel[6][7];
 			
-			populateDaysOfWeek();
-			populateDaysOfMonth();
+			updateCalendarDays();
 			
 		}
 		
 		private void populateDaysOfWeek() {
 			
 			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.ipady = 30; // height of cell
+			
+			constraints.weightx = 0.5;
+			constraints.ipady = 15; // Cell height
+			
 			
 			for(int i = 0; i < daysOfWeekLabels.length; i++) {
 				
 				constraints.gridx = i;
 				constraints.gridy = 0;
 				
-				daysOfWeekLabels[i] = new JLabel(daysOfWeek[i]);
+				daysOfWeekLabels[i] = new JLabel(DAYS_OF_WEEK[i]);
 				this.add(daysOfWeekLabels[i], constraints);
 				
 			}
@@ -204,14 +210,15 @@ public class AppointmentBookWindow implements ActionListener {
 			String[][] daysOfMonth = getDaysOfMonth();
 			
 			GridBagConstraints constraints = new GridBagConstraints();
+
+			constraints.weightx = 0.5;
+			constraints.weighty = 0.5;
 			
 			for (int r = 0; r < daysOfMonthLabels.length; r++) {
 				for (int c = 0; c < daysOfMonthLabels[0].length; c++) {
 					
 					constraints.gridx = c;
 					constraints.gridy = r + 1;
-					constraints.ipadx = 80;
-					constraints.ipady = (calendarHeight - 30) / 6;
 					
 					daysOfMonthLabels[r][c] = null;
 					if (daysOfMonth[r][c] != null) {
@@ -221,7 +228,7 @@ public class AppointmentBookWindow implements ActionListener {
 						
 					} else {
 
-						daysOfMonthLabels[r][c] = new JLabel("");
+						daysOfMonthLabels[r][c] = new JLabel(" ");
 						this.add(daysOfMonthLabels[r][c], constraints);
 						
 					}
@@ -261,7 +268,6 @@ public class AppointmentBookWindow implements ActionListener {
 			for (int i = 0; i < 7; i++) {
 				g.drawLine(0, i * verticalSpaceBetweenLines + 30, this.getWidth(), i * verticalSpaceBetweenLines + 30);
 			}
-			
 			
 		}
 		
