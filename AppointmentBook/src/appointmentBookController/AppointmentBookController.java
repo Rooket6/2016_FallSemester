@@ -1,9 +1,12 @@
 package appointmentBookController;
 
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 @SuppressWarnings("serial")
 public class AppointmentBookController extends GregorianCalendar {
+	
+	private HashSet<Appointment> appointments;
 	
 	public AppointmentBookController() {
 		
@@ -12,12 +15,30 @@ public class AppointmentBookController extends GregorianCalendar {
 		// This is useful to AppointmentBookWindow for finding the name of the first day of the month so it can populate the calendar properly
 		this.set(DAY_OF_MONTH, 1);
 		
+		appointments = new HashSet<Appointment>();
+		
+	}
+	
+	// Type 0 for Onetime, 1 for monthly, 2 for daily
+	public void addAppointment(int type, String description, int month, int day, int year) {
+		
+		if (type == 0)
+			appointments.add(new Onetime(description, month, day, year));
+		else if (type == 1)
+			appointments.add(new Monthly(description, month, day, year));
+		else if (type == 2)
+			appointments.add(new Daily(description, month, day, year));
+		else
+			throw new ArgumentOutOfBoundsException();
+		
 	}
 	
 	private class Onetime extends Appointment {
 
-		public Onetime(int month, int day, int year, String description) {
-			super(month, day, year, description);
+		public Onetime(String description, int month, int day, int year) {
+			
+			super("(Onetime) ", description, month, day, year);
+			
 		}
 
 		@Override
@@ -39,8 +60,10 @@ public class AppointmentBookController extends GregorianCalendar {
 	
 	private class Monthly extends Appointment {
 
-		public Monthly(int month, int day, int year, String description) {
-			super(month, day, year, description);
+		public Monthly(String description, int month, int day, int year) {
+			
+			super("(Monthly) ", description, month, day, year);
+			
 		}
 
 		@Override
@@ -66,15 +89,17 @@ public class AppointmentBookController extends GregorianCalendar {
 				return true;
 			
 			return false;
-			
+
 		}
 		
 	}
 	
 	private class Daily extends Appointment {
 
-		public Daily(int month, int day, int year, String description) {
-			super(month, day, year, description);
+		public Daily(String description, int month, int day, int year) {
+			
+			super("(Daily) ", description, month, day, year);
+			
 		}
 
 		@Override
@@ -82,6 +107,18 @@ public class AppointmentBookController extends GregorianCalendar {
 
 			return true;
 			
+		}
+		
+	}
+	
+	private class ArgumentOutOfBoundsException extends RuntimeException {
+		
+		public ArgumentOutOfBoundsException() {
+			super();
+		}
+		
+		public ArgumentOutOfBoundsException(String message) {
+			super(message);
 		}
 		
 	}
