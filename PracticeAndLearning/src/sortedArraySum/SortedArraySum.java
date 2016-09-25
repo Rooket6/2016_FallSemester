@@ -39,7 +39,7 @@ public class SortedArraySum {
 		int middleIndex;
 		while ((j - i) >= 0) {
 			
-			middleIndex = (int) Math.floor((j + i) / 2);
+			middleIndex = (j + i) / 2;
 			
 			if (arr[middleIndex] < sum) {
 				i = middleIndex + 1;
