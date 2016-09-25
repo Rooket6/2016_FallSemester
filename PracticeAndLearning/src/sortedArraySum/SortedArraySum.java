@@ -30,11 +30,7 @@ public class SortedArraySum {
 	public static boolean firstAttempt(int[] arr, int someElmIndex, int otherElmIndex) {
 		
 		// Get the index of the largest of the two given elements
-		int indexOflargestOfTwoElm;		
-		if (arr[someElmIndex] > arr[otherElmIndex])
-			indexOflargestOfTwoElm = someElmIndex;
-		else
-			indexOflargestOfTwoElm = otherElmIndex;
+		int indexOflargestOfTwoElm = Math.max(someElmIndex, otherElmIndex);
 		
 		// Binary search
 		int sum = arr[someElmIndex] + arr[otherElmIndex];
