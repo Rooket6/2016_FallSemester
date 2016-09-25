@@ -72,6 +72,8 @@ public class Anagrams {
 	// Count character occurrences in words. Compare the counts.
 	// O(n)
 		// Assuming HashMap's get/put time is constant. (Which it should be when there is no collisions BUT HOW??),
+			// After thinking about it for a while, I determined that if HashMap uses the hash of an object
+			// to compute some sort of index, then it makes sense for the constant get/put/remove times
 		// O(n) time inserting values into map,
 		// O(n) time comparing the count reports
 	public static boolean areAnagramsSecondTry(String wordOne, String wordTwo) {

@@ -10,6 +10,7 @@ import anagrams.Anagrams.MutableInt;
 public class FindNonRepeatedInt {
 
 	/*
+	 * Question: https://www.glassdoor.com/Interview/software-engineer-intern-interview-questions-SRCH_KO0,24.htm
 	 * Software Development Engineering Intern at Amazon.com was asked...	Jun 23, 2012
 	 * You are given an array with n positive integers where all values in the array are repeated except for one.
 	 * Return the one that is not repeated.
@@ -61,7 +62,7 @@ public class FindNonRepeatedInt {
 		// Count all occurrences of every integer
 		// Return the integer with exactly one occurrence or -1
 	// O(n)
-		// O(n) loop that does at most two operations of constant time
+		// O(n) loop
 		// O(n) loop
 		// O(n) + O(n) = O(n)
 	public static int secondAttempt(int[] arr) {
